@@ -1,0 +1,22 @@
+{% for post in last_posts %}
+<div class="single-recent-blog-post item">
+    <div class="thumb">
+        <img class="img-fluid" src={{post.images.url}} style="height:240px;" alt="">
+    </div>
+    <div class="details">
+        <div class="tags">
+            <ul>
+                {% for i in post.category.all %}
+                <li><a href={% url 'mag:filter_by_category_view' category=i %}>{{i}}{% if i != post.category.last %},{%endif%}</a></li>
+                {%endfor%}							
+            </ul>
+        </div>
+        <a href={% url 'mag:post_view' pk=post.id%}><h4 class="title">{{post.subject}}</h4></a>
+        <p>
+            {{post.content|truncatewords:15}}
+        </p>
+        <h6 class="date">{{post.published_date|date:"d M Y"}}</h6>
+    </div>	
+</div>													
+
+{%endfor%}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %} {{post.subject}} {%endblock%}
+
+{%block content%}
+			<section class="relative about-banner" style="background: url({{post.images.url}}) center;background-size: cover;">	
+				<div class="overlay overlay-bg"></div>
+				<div class="container">				
+					<div class="row d-flex align-items-center justify-content-center">
+						<div class="about-content col-lg-12">
+							<h1 class="text-white">
+								{{post.subject}}		
+							</h1>	
+							<p class="text-white link-nav"><a href="{% url 'mag:home_view' %}">Home</a>  <span class="lnr lnr-arrow-right"></span><a href="{% url 'mag:blog_view' %}">Blog </a> <span class="lnr lnr-arrow-right"></span> <a href="{%url 'post_view' pk=post.id%}"> Blog Details Page</a></p>
+						</div>	
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->					  
+			
+			<!-- Start post-content Area -->
+			<section class="post-content-area single-post-area">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 posts-list">
+							<div class="single-post row">
+								<div class="col-lg-12">
+									<div class="feature-img">
+										<img class="img-fluid" src="{{post.images.url}}" alt="">
+									</div>									
+								</div>
+								<div class="col-lg-3  col-md-3 meta-details">
+									<ul class="tags">
+										<li>
+											{% for i in post.category.all %}
+												
+												<li><a href={% url 'mag:filter_by_category_view' category=i %}>{{i}}{% if i != post.category.last %},{%endif%}</a></li>
+												
+											{%endfor%}
+										</li>
+									</ul>
+									<div class="user-details row">
+										<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
+										<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"d M Y"}}</a> <span class="lnr lnr-calendar-full"></span></p>
+										<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.views}} Views</a> <span class="lnr lnr-eye"></span></p>
+										{% comment %} <p class="comments col-lg-12 col-md-12 col-6"><a href="#">06 Comments</a> <span class="lnr lnr-bubble"></span></p>																				 {% endcomment %}
+									</div>
+								</div>
+								<div class="col-lg-9 col-md-9">
+									<h3 class="mt-20 mb-20">{{post.subject}}</h3>
+									<p class="excert">
+										{{post.content}}	
+									</p>
+								</div>
+							
+							</div>
+							<div class="navigation-area">
+								<div class="row">
+									<div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+										{% if prev %}
+										<div class="thumb">
+											<a href="{% url 'mag:post_view' pk=prev.id %}"><img style="width:100px" src="{{prev.images.url}}" alt=""></a>
+										</div>
+										<div class="arrow">
+											<a href="{% url 'mag:post_view' pk=prev.id %}"><span class="lnr text-white lnr-arrow-left"></span></a>
+										</div>
+										<div class="detials">
+											<p>Prev Post</p>
+											<a href={% url 'mag:post_view' pk=prev.id %}><h4>{{prev.subject}}</h4></a>
+										</div>
+									</div>
+									{%endif%}
+									<div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+										<div class="detials">
+										{% if next %}
+											<p>Next Post</p>
+											<a href="{% url 'mag:post_view' pk=next.id %}"><h4>{{next.subject}}</h4></a>
+										</div>
+										<div class="arrow">
+											<a href="{% url 'mag:post_view' pk=next.id %}"><span class="lnr text-white lnr-arrow-right"></span></a>
+										</div>
+										<div class="thumb">
+											<a href="{% url 'mag:post_view' pk=next.id %}"><img  style="width:120px" src="{{next.images.url}}" alt=""></a>
+										</div>
+										{%endif%}										
+									</div>									
+								</div>
+							</div>
+							<!-- comments area-->
+						</div>
+					</div>
+						<div class="col-lg-4 sidebar-widgets">
+							<div class="widget-wrap">
+								<div class="single-sidebar-widget search-widget">
+									<form class="search-form" action="#">
+			                            <input placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'" >
+			                            <button type="submit"><i class="fa fa-search"></i></button>
+			                        </form>
+								</div>
+								{% get_latest_posts %}
+					
+							</div>
+						</div>
+					</div>
+				</div>	
+			</section>
+{% endblock content %}

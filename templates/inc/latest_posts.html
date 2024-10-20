@@ -1,0 +1,16 @@
+<div class="single-sidebar-widget popular-post-widget">
+    <h4 class="popular-title">Latest Posts</h4>
+    <div class="popular-post-list">
+        {% for posts in last_posts %}
+        <div class="single-post-list d-flex flex-row align-items-center">
+            <div class="thumb">
+                <img class="img-fluid" style="width:100px" src="{{posts.images.url}}" alt="">
+            </div>
+            <div class="details">
+                <a href={% url "mag:post_view" pk=posts.id %}><h6>{{posts.subject}}</h6></a>
+                <p>{{posts.published_date|date:"d M Y"}}</p>
+            </div>
+        </div>		
+        {%endfor%}													
+    </div>
+</div>

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load custom_tags %}
+{% block title %} Blog {%endblock%}
+
+{% block content %}
+			<!-- start banner Area -->
+			<section class="banner-area relative blog-home-banner" id="home">	
+				<div class="overlay overlay-bg"></div>
+				<div class="container">				
+					<div class="row d-flex align-items-center justify-content-center">
+						<div class="about-content blog-header-content col-lg-12">
+							<h1 class="text-white">
+								Welcome To Our Blog			
+							</h1>							
+						</div>	
+					</div>
+				</div>
+			</section>
+			<!-- End banner Area -->				  
+
+		
+			<!-- Start post-content Area -->
+			<section class="post-content-area">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-8 posts-list"  style="margin-top:5%;">
+							{% for post in posts %}
+							<div class="single-post row">
+								<div class="col-lg-3  col-md-3 meta-details">
+									<ul class="tags">
+										{% for i in post.category.all %}
+												<li><a href={% url 'mag:filter_by_category_view' category=i %}>{{i}}{% if i != post.category.last %},{%endif%}</a></li>
+										{%endfor%}
+									</ul>
+									<div class="user-details row">
+										<p class="user-name col-lg-12 col-md-12 col-6"><a href="#">{{post.author.get_full_name}}</a> <span class="lnr lnr-user"></span></p>
+										<p class="date col-lg-12 col-md-12 col-6"><a href="#">{{post.published_date|date:"d M Y"}}7</a> <span class="lnr lnr-calendar-full"></span></p>
+										<p class="view col-lg-12 col-md-12 col-6"><a href="#">{{post.views}} Views</a> <span class="lnr lnr-eye"></span></p>
+									</div>
+								</div>
+								<div class="col-lg-9 col-md-9 ">
+									<div class="feature-img">
+										<img class="img-fluid" src="{{post.images.url}}" alt="">
+									</div>
+									<a class="posts-title" href="{% url 'mag:post_view' pk=post.id %}"><h3>{{post.subject}}</h3></a>
+									<p class="excert">
+										{{post.content|truncatewords:20}}
+									</p>
+									<a href="{% url 'mag:post_view' pk=post.id %}" class="primary-btn">View More</a>
+								</div>
+							</div>
+							{%endfor%}			
+		                    <nav class="blog-pagination justify-content-center d-flex">
+		                        <ul class="pagination">
+		                            <li class="page-item">
+		                                <a href="#" class="page-link" aria-label="Previous">
+		                                    <span aria-hidden="true">
+		                                        <span class="lnr lnr-chevron-left"></span>
+		                                    </span>
+		                                </a>
+		                            </li>
+		                            <li class="page-item"><a href="#" class="page-link">01</a></li>
+		                            <li class="page-item active"><a href="#" class="page-link">02</a></li>
+		                            <li class="page-item"><a href="#" class="page-link">03</a></li>
+		                            <li class="page-item">
+		                                <a href="#" class="page-link" aria-label="Next">
+		                                    <span aria-hidden="true">
+		                                        <span class="lnr lnr-chevron-right"></span>
+		                                    </span>
+		                                </a>
+		                            </li>
+		                        </ul>
+		                    </nav>
+						</div>
+						<div class="col-lg-4 sidebar-widgets">
+							<div class="widget-wrap">
+								<div class="single-sidebar-widget search-widget">
+									<form class="search-form" action="#">
+			                            <input id="search" placeholder="Search Posts" name="search" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'" >
+			                            <button type="submit"><i class="fa fa-search"></i></button>
+			                        </form>
+								</div>
+								{% get_latest_posts %}
+								<div class="single-sidebar-widget post-category-widget">
+									<h4 class="category-title">Post Catgories</h4>
+									{% get_category %}
+								</div>				
+							</div>
+						</div>
+					</div>
+				</div>	
+			</section>
+			{% endblock content %}
